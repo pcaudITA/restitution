@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>restitution.pcaudit.tech</title>
+<meta name="description" content="Antes de devolver un dispositivo en leasing: elige tu dispositivo y confirma, paso a paso, que está libre de bloqueos, datos y cuentas. Trilingüe ES/EN/IT.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --bg-primary:#f8fafc; --bg-secondary:#fff; --bg-tertiary:#f1f5f9;
+  --text-primary:#0f172a; --text-secondary:#475569; --text-muted:#94a3b8;
+  --border-color:#cbd5e1; --border-focus:#3b82f6;
+  --accent-primary:#3b82f6; --accent-sender:#ef4444; --accent-carrier:#10b981; --accent-warning:#f59e0b;
+  --warm:#f472b6;
+  --card-shadow:0 4px 6px -1px rgb(0 0 0 / .05),0 2px 4px -2px rgb(0 0 0 / .05);
+  --glass-bg:rgba(255,255,255,.7); --glass-border:rgba(255,255,255,.5); --glass-blur:12px;
+}
+[data-theme="dark"]{
+  --bg-primary:#0f172a; --bg-secondary:#1e293b; --bg-tertiary:#334155;
+  --text-primary:#f8fafc; --text-secondary:#cbd5e1; --text-muted:#64748b;
+  --border-color:#475569; --border-focus:#60a5fa;
+  --accent-primary:#60a5fa; --accent-sender:#f87171; --accent-carrier:#34d399; --accent-warning:#fbbf24;
+  --warm:#f9a8d4;
+  --card-shadow:0 10px 15px -3px rgb(0 0 0 / .3),0 4px 6px -4px rgb(0 0 0 / .3);
+  --glass-bg:rgba(30,41,59,.7); --glass-border:rgba(255,255,255,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;transition:background-color .3s,color .3s}
+a{color:var(--accent-primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{position:sticky;top:0;z-index:100;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-bottom:1px solid var(--glass-border);padding:.85rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:var(--card-shadow)}
+.logo{display:flex;align-items:center;text-decoration:none}
+.brand-logo{height:26px;width:auto;display:block}
+[data-theme="dark"] .brand-logo{filter:invert(1)}
+.nav-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.btn{font-family:inherit;font-size:.82rem;font-weight:600;padding:.42rem .8rem;border-radius:.5rem;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .2s}
+.btn:hover{background:var(--bg-tertiary);border-color:var(--text-muted)}
+.btn-primary{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
+.lang-group{display:flex;gap:.25rem;border:1px solid var(--border-color);border-radius:.6rem;padding:.2rem;background:var(--bg-secondary)}
+.lang-group .btn{border:none;padding:.32rem .6rem}
+.btn-icon{padding:.45rem;border-radius:50%;aspect-ratio:1;font-size:.95rem;line-height:1}
+
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+
+.hero{text-align:center;margin:1.5rem 0 .5rem}
+.hero .heart{width:54px;height:54px;color:var(--warm);margin:0 auto .6rem;display:block}
+.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:-.01em}
+.hero p.lead{color:var(--text-secondary);margin:.6rem auto 0;max-width:54ch;font-size:1.05rem}
+
+.intro-card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:1rem;box-shadow:var(--card-shadow);padding:1.4rem 1.5rem;margin:1.5rem 0}
+.intro-card p{font-size:.96rem;color:var(--text-secondary);margin:.7rem 0}
+.intro-card p:first-child{margin-top:0}
+.intro-card .why{background:var(--bg-tertiary);border-left:4px solid var(--accent-warning);border-radius:.6rem;padding:.7rem .9rem;color:var(--text-secondary)}
+.intro-card b{color:var(--text-primary);font-weight:600}
+.start-row{text-align:center;margin:1.6rem 0 .5rem}
+.start-btn{font-size:1.05rem;font-weight:700;padding:.85rem 2.4rem;border-radius:.8rem;border:none;color:#fff;cursor:pointer;background:linear-gradient(90deg,var(--warm),var(--accent-primary));box-shadow:var(--card-shadow);transition:transform .12s,filter .2s}
+.start-btn:hover{filter:brightness(1.05)}
+.start-btn:active{transform:scale(.98)}
+.start-hint{font-size:.82rem;color:var(--text-muted);margin-top:.7rem}
+
+/* selection screens */
+.screen-head{display:flex;align-items:center;gap:.6rem;margin:.4rem 0 .8rem}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;font-family:inherit;font-size:.85rem;font-weight:600;color:var(--text-secondary);background:none;border:none;cursor:pointer;padding:.3rem .2rem}
+.back-btn:hover{color:var(--text-primary)}
+.back-btn svg{width:16px;height:16px}
+.screen-title{font-size:1.5rem;font-weight:700;letter-spacing:-.01em;text-align:center;margin-top:.3rem}
+.screen-sub{color:var(--text-secondary);text-align:center;margin:.45rem auto 1.4rem;max-width:46ch;font-size:.98rem}
+.choice-grid{display:flex;flex-direction:column;gap:.8rem;max-width:520px;margin:0 auto}
+.choice{display:flex;align-items:center;gap:1rem;text-align:left;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:1rem;box-shadow:var(--card-shadow);padding:1.05rem 1.2rem;cursor:pointer;font-family:inherit;color:var(--text-primary);transition:border-color .2s,transform .12s,background .2s}
+.choice:hover{border-color:var(--warm);background:var(--bg-tertiary)}
+.choice:active{transform:scale(.99)}
+.choice-ic{flex-shrink:0;width:46px;height:46px;border-radius:.8rem;background:var(--bg-tertiary);display:flex;align-items:center;justify-content:center;color:var(--accent-primary)}
+.choice-ic svg{width:26px;height:26px}
+.choice-tx{flex:1;display:flex;flex-direction:column}
+.choice-tx b{font-size:1.02rem;font-weight:600}
+.choice-tx small{font-size:.82rem;color:var(--text-muted)}
+.choice-arrow{color:var(--text-muted);display:flex}
+.choice-arrow svg{width:18px;height:18px}
+
+/* help chooser */
+.help-card{background:var(--bg-secondary);border:1px dashed var(--border-color);border-radius:1rem;padding:1rem 1.2rem;margin:.4rem 0 1.2rem}
+.help-card .h-title{font-size:.92rem;font-weight:600;display:flex;align-items:center;gap:.45rem}
+.help-card .h-title svg{width:18px;height:18px;color:var(--accent-primary)}
+.help-card .h-sub{font-size:.82rem;color:var(--text-muted);margin:.25rem 0 .7rem}
+.help-chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{font-family:inherit;font-size:.82rem;font-weight:600;padding:.4rem .8rem;border-radius:2rem;background:var(--bg-tertiary);color:var(--text-secondary);border:1px solid var(--border-color);cursor:pointer}
+.chip:hover{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
+.ilink{color:var(--accent-primary);cursor:pointer;text-decoration:underline}
+
+/* progress */
+.progress-wrap{display:none;position:sticky;top:64px;z-index:50;background:var(--bg-primary);padding:.9rem 0 .5rem;margin:.4rem 0}
+body.on-checklist .progress-wrap{display:block}
+.progress-title{font-size:.92rem;font-weight:700;color:var(--text-primary);margin-bottom:.55rem;text-align:center}
+.progress-track{height:14px;background:var(--bg-tertiary);border-radius:99px;overflow:hidden;border:1px solid var(--border-color)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--warm),var(--accent-carrier));border-radius:99px;transition:width .45s cubic-bezier(.22,1,.36,1)}
+.progress-foot{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:.55rem}
+.progress-label{font-size:.84rem;font-weight:600;color:var(--text-secondary)}
+.restart-btn{font-family:inherit;font-size:.78rem;font-weight:600;padding:.3rem .7rem;border-radius:2rem;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-secondary);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;transition:all .2s}
+.restart-btn:hover{border-color:var(--warm);color:var(--text-primary)}
+.restart-btn svg{width:14px;height:14px}
+.celebrate .restart-btn{margin-top:1.1rem;font-size:.9rem;padding:.6rem 1.4rem}
+
+/* steps */
+.step{display:flex;gap:.9rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:1rem;box-shadow:var(--card-shadow);padding:1.1rem 1.2rem;margin:.85rem 0;cursor:pointer;transition:border-color .2s,transform .12s,background .2s;align-items:flex-start}
+.step:hover{border-color:var(--warm)}
+.step:active{transform:scale(.995)}
+.step.done{border-color:var(--accent-carrier)}
+.checkbox{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--border-color);display:flex;align-items:center;justify-content:center;transition:all .25s;margin-top:.1rem}
+.checkbox svg{width:17px;height:17px;color:#fff;opacity:0;transform:scale(.4);transition:all .25s}
+.step.done .checkbox{background:var(--accent-carrier);border-color:var(--accent-carrier)}
+.step.done .checkbox svg{opacity:1;transform:scale(1)}
+.step-body h3{font-size:1.02rem;font-weight:600}
+.step.done .step-body h3{color:var(--text-secondary)}
+.step-body .why{font-size:.88rem;color:var(--text-secondary);margin:.35rem 0}
+.step-body .how{font-size:.85rem;color:var(--text-muted);background:var(--bg-tertiary);border-radius:.5rem;padding:.5rem .7rem;margin-top:.5rem}
+.nudge{display:none;align-items:center;gap:.45rem;margin-top:.55rem;font-size:.82rem;color:var(--accent-warning);background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.35);border-radius:.5rem;padding:.45rem .65rem}
+.nudge.show{display:flex;animation:fadeIn .2s ease-out}
+.nudge svg{width:15px;height:15px;flex-shrink:0}
+
+.reassure{display:flex;gap:.75rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-left:4px solid var(--warm);border-radius:.8rem;padding:.9rem 1.1rem;margin:1.3rem 0;box-shadow:var(--card-shadow);font-size:.9rem;color:var(--text-secondary)}
+.reassure svg{flex-shrink:0;width:20px;height:20px;color:var(--warm);margin-top:.15rem}
+
+.celebrate{display:none;text-align:center;background:linear-gradient(180deg,rgba(16,185,129,.10),var(--bg-secondary));border:1px solid var(--accent-carrier);border-radius:1.2rem;box-shadow:var(--card-shadow);padding:2rem 1.4rem;margin:1.5rem 0}
+.celebrate.show{display:block;animation:pop .5s cubic-bezier(.22,1.4,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.celebrate svg.big{width:60px;height:60px;color:var(--accent-carrier);margin-bottom:.5rem}
+.celebrate h2{font-size:1.5rem;font-weight:700}
+.celebrate p{color:var(--text-secondary);margin:.5rem auto 0;max-width:46ch}
+
+footer{max-width:760px;margin:0 auto;padding:1.5rem 1.1rem 3rem;border-top:1px solid var(--border-color);color:var(--text-muted);font-size:.82rem;text-align:center}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+#app{animation:fadeIn .25s ease-out}
+
+/* guide drawer */
+.guide-overlay{position:fixed;inset:0;z-index:2000;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center}
+[data-theme="dark"] .guide-overlay{background:rgba(0,0,0,.6)}
+.guide-overlay.open{display:flex;animation:fadeIn .2s ease-out}
+.guide-sheet{background:var(--bg-secondary);width:100%;max-width:820px;height:90vh;border-radius:1.1rem 1.1rem 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:sheetUp .3s cubic-bezier(.22,1,.36,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@media(min-width:760px){.guide-overlay{align-items:center}.guide-sheet{height:82vh;border-radius:1.1rem}}
+.guide-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.9rem 1rem .8rem;border-bottom:1px solid var(--border-color);background:var(--bg-tertiary)}
+.guide-grab{position:absolute;top:.4rem;left:50%;transform:translateX(-50%);width:38px;height:4px;border-radius:99px;background:var(--border-color)}
+@media(min-width:760px){.guide-grab{display:none}}
+.guide-title{font-weight:700;font-size:.95rem;color:var(--text-primary)}
+.guide-title small{display:block;font-size:.66rem;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em}
+.guide-close{flex-shrink:0;width:36px;height:36px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-secondary);font-size:1rem;line-height:1;cursor:pointer;color:var(--text-secondary)}
+.guide-close:hover{background:var(--bg-primary);color:var(--text-primary)}
+.guide-frame{flex:1;width:100%;border:none;background:var(--bg-secondary)}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html" aria-label="PCaudit">
+    <img class="brand-logo" src="pcaudit-logo.svg" alt="PCaudit">
+  </a>
+  <div class="nav-actions">
+    <div class="lang-group">
+      <button class="btn" data-langbtn="it">IT</button>
+      <button class="btn" data-langbtn="en">EN</button>
+      <button class="btn" data-langbtn="es">ES</button>
+    </div>
+    <button class="btn btn-icon" id="theme-toggle" title="Tema claro / oscuro">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="progress-wrap">
+    <div class="progress-title" id="progress-title"></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-foot">
+      <span class="progress-label" id="progress-label"></span>
+      <button class="restart-btn" data-act="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></svg><span id="restart-label"></span></button>
+    </div>
+  </div>
+
+  <div id="app"></div>
+</main>
+
+<div class="guide-overlay" id="guide-overlay" aria-hidden="true">
+  <div class="guide-sheet" role="dialog" aria-modal="true">
+    <div class="guide-bar">
+      <div class="guide-grab"></div>
+      <span class="guide-title" id="guide-title"></span>
+      <button class="guide-close" id="guide-close" aria-label="Close">✕</button>
+    </div>
+    <iframe class="guide-frame" id="guide-frame" title="Guide" loading="lazy" src="about:blank"></iframe>
+  </div>
+</div>
+
+<footer><span id="footer"></span></footer>
+
+<script>
+(function(){
+  var root=document.documentElement, body=document.body;
+
+  /* ---------- icons ---------- */
+  var IC={
+    phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><line x1="10" y1="18.5" x2="14" y2="18.5"/></svg>',
+    laptop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 20h20"/></svg>',
+    chrome:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4"/><path d="M12 8.6h8.4M9 13.6l-4.2 7.2M15 13.6l-4.2 7.2"/></svg>',
+    chevL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>',
+    chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>',
+    help:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
+    info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+    warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>',
+    checkBig:'<svg class="big" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>'
+  };
+  function catIcon(c){return c==='phone'?IC.phone:c==='laptop'?IC.laptop:IC.chrome;}
+  function platIcon(d){return (d==='apple'||d==='android')?IC.phone:IC.laptop;}
+
+  /* ---------- content ---------- */
+  var I18N={
+    es:{
+      subtitle:'Devolución de dispositivo',
+      footer:'Con cariño · PCaudit · Tu progreso se guarda en este navegador.',
+      begin:'Empecemos', back:'Atrás', restart:'Empezar de nuevo', startOver:'Empezar con otro dispositivo',
+      helpTitle:'¿No sabes cómo hacerlo?', helpSub:'Abre la explicación detallada, sin salir de esta página.',
+      reassure:'¿Algún punto se te resiste? No pasa nada. Abre la <span class="ilink" data-guide-full>guía completa</span> cuando quieras.',
+      allDone:'¡Todo en orden!', guideCap:'Guía de restitución',
+      chooseDevice:'¿Qué vas a devolver?', chooseDeviceSub:'Elige el tipo de dispositivo para ver solo los pasos que te aplican.',
+      choosePhone:'¿Qué tipo de teléfono o tablet?', chooseLaptop:'¿Qué tipo de ordenador?',
+      recap:'Confirmemos juntos que tu {device} queda totalmente limpio',
+      celebrate:'Tu {device} está completamente desvinculado y listo para devolverlo sin contratiempos. Gracias por tu cuidado.',
+      nudge:'¿Has completado antes los pasos anteriores? Puedes continuar igualmente; solo queremos asegurarnos de no saltarnos nada.',
+      prog:function(d,t){return d===t?'¡Listo! '+t+' de '+t+' ✓':'Progreso: '+d+' de '+t+' comprobado'+(d===1?'':'s');},
+      welcome:{title:'Antes de devolver tu dispositivo', lead:'Vamos a dejarlo todo listo juntos, en unos minutos y sin complicaciones.',
+        p1:'Estás a punto de devolver un dispositivo que forma parte de un <b>contrato de arrendamiento (leasing)</b>. Antes de que vuelva, tiene que quedar <b>completamente libre</b>: con la sesión cerrada en tus cuentas, sin tu información personal y sin ningún bloqueo.',
+        why:'<b>Por qué es importante:</b> si el dispositivo vuelve aún vinculado a tu cuenta o bloqueado, no se puede procesar. Eso suele provocar <b>retrasos, costes adicionales y posibles penalizaciones</b> del contrato, y todo ello se evita fácilmente dedicando unos minutos ahora.',
+        p3:'Tranquilo: te acompañamos <b>paso a paso</b>, sin prisa. Primero dinos qué dispositivo vas a devolver y te mostraremos solo lo que te aplica.',
+        hint:'Tardarás solo unos minutos · Tu progreso se guarda solo'},
+      categories:{phone:{name:'Smartphone o tablet',desc:'iPhone, iPad o Android'},laptop:{name:'Portátil o sobremesa',desc:'PC Windows o Mac'},chromebook:{name:'Chromebook',desc:'Funciona con ChromeOS'}},
+      platforms:{apple:{name:'Apple (iPhone / iPad)',desc:'iPhone o iPad'},android:{name:'Android',desc:'Samsung, Pixel, Xiaomi, etc.'},windows:{name:'Windows',desc:'Dell, HP, Lenovo, etc.'},mac:{name:'Mac',desc:'MacBook, iMac, Mac mini'}},
+      devices:{
+        apple:{name:'iPhone / iPad', chips:[{l:'iPhone / iPad',g:'apple'}], steps:[
+          {t:'Cerraste sesión de iCloud (tu Cuenta Apple)',w:'Tu Cuenta Apple es la llave que une el dispositivo a ti.',h:'En Configuración, tu nombre ya no aparece arriba del todo.'},
+          {t:'El dispositivo ya no está en tu lista de dispositivos Apple',w:'Confirma que la desvinculación llegó a iCloud, no solo al dispositivo.',h:'En la app Buscar (o en tu Cuenta Apple) el dispositivo ya no aparece.'},
+          {t:'Buscar / Bloqueo de Activación está desactivado',w:'Es el candado que impediría usarlo al siguiente propietario.',h:'El dispositivo ya no aparece en Buscar y la configuración no pide tu Apple ID.'},
+          {t:'Lo borraste todo',w:'Tus datos y ajustes desaparecen del dispositivo.',h:'Usaste Configuración ▸ General ▸ Transferir o restablecer ▸ Borrar contenido y configuración.'},
+          {t:'La pantalla de bienvenida no pide tu Apple ID — la prueba de fuego',w:'Si la configuración pide tu Apple ID, sigue bloqueado. Si no, está libre de verdad.',h:'Enciéndelo; llegas a la configuración sin que pida la Cuenta Apple anterior.'},
+          {t:'(Si era un dispositivo de empresa) está liberado de la gestión',w:'Los dispositivos gestionados pueden volver a bloquearse tras el borrado.',h:'La configuración no muestra ningún mensaje de «gestionado por…» ni se reinscribe solo.'}
+        ]},
+        android:{name:'teléfono Android', chips:[{l:'Cuenta Google',g:'google'},{l:'Samsung',g:'samsung'}], steps:[
+          {t:'Eliminaste tus cuentas del teléfono',w:'Quita tu cuenta Google (y Samsung / Mi / Huawei si las hay): es lo que libera el teléfono.',h:'Ajustes ▸ Cuentas ▸ elimina cada cuenta.'},
+          {t:'El dispositivo ya no está en tu lista de dispositivos de Google',w:'Confirma que la desvinculación llegó a la nube.',h:'En myaccount.google.com el dispositivo ya no aparece.'},
+          {t:'Lo borraste, después de quitar la cuenta',w:'Quitar primero la cuenta evita que el FRP bloquee el teléfono tras el reinicio.',h:'Hiciste el restablecimiento de fábrica solo cuando ya no había cuentas.'},
+          {t:'La pantalla de bienvenida no pide la cuenta Google anterior — la prueba de fuego',w:'Si pide la cuenta Google antigua, el FRP sigue activo. Si no, está libre.',h:'Enciéndelo y avanza por la configuración sin que pida la cuenta anterior.'},
+          {t:'(Si era un dispositivo de empresa) está liberado de la gestión',w:'Knox, zero-touch o Intune pueden reinscribirlo tras un borrado.',h:'La configuración no muestra mensajes de gestión ni se reinscribe solo.'}
+        ]},
+        windows:{name:'PC Windows', chips:[{l:'PC Windows',g:'windows'}], steps:[
+          {t:'Cerraste sesión / eliminaste tu cuenta de Microsoft',w:'Es la que vincula el PC a ti.',h:'Configuración ▸ Cuentas — tu cuenta ya no está.'},
+          {t:'El dispositivo ya no está en tu lista de dispositivos de Microsoft',w:'Confirma que está desvinculado de tu cuenta en línea.',h:'En account.microsoft.com/devices el PC ya no aparece.'},
+          {t:'(Si el disco está cifrado) guardaste la clave de recuperación de BitLocker',w:'Sin ella puedes quedarte bloqueado al borrar o reinstalar.',h:'Tienes la clave en tu cuenta Microsoft/Entra, o BitLocker está desactivado.'},
+          {t:'Restableciste el PC',w:'Tus datos y ajustes se borran.',h:'Usaste Configuración ▸ Restablecer este PC ▸ Quitar todo.'},
+          {t:'(Si era un PC de empresa) retirado de Intune y dado de baja en Autopilot',w:'«Retirar» por sí solo deja Autopilot, así que se reinscribe tras el borrado.',h:'TI lo quitó de Intune y de los dispositivos de Windows Autopilot.'}
+        ]},
+        mac:{name:'Mac', chips:[{l:'Mac',g:'mac'}], steps:[
+          {t:'Cerraste sesión de tu Cuenta Apple y desactivaste Buscar',w:'Tu Cuenta Apple vincula el Mac a ti.',h:'Ajustes del Sistema ▸ tu nombre ▸ Cerrar sesión.'},
+          {t:'El dispositivo ya no está en tu lista de dispositivos Apple',w:'Confirma que la desvinculación llegó a iCloud.',h:'En Buscar (o en tu Cuenta Apple) el Mac ya no aparece.'},
+          {t:'Buscar / Bloqueo de Activación está desactivado',w:'Los Mac con chip Apple tienen también un bloqueo a nivel de firmware ligado a Buscar.',h:'Cerrar sesión / desactivar Buscar lo libera.'},
+          {t:'Lo borraste todo',w:'Tus datos y ajustes se borran.',h:'Usaste Ajustes del Sistema ▸ General ▸ Transferir o restablecer ▸ Borrar contenido y configuración.'},
+          {t:'La pantalla de bienvenida no pide tu Apple ID — la prueba de fuego',w:'Si la configuración pide tu Apple ID, sigue bloqueado.',h:'Enciéndelo; llegas a la configuración sin la Cuenta Apple anterior.'},
+          {t:'(Si era un Mac de empresa) está liberado de la gestión',w:'Los Mac gestionados pueden volver a bloquearse tras el borrado.',h:'La configuración no muestra ningún mensaje de «gestionado por…».'}
+        ]},
+        chromebook:{name:'Chromebook', chips:[{l:'Chromebook',g:'chromebook'}], steps:[
+          {t:'Cerraste sesión / eliminaste tu cuenta Google (perfil propietario)',w:'La cuenta propietaria vincula el Chromebook a ti.',h:'En myaccount.google.com ▸ Seguridad ▸ Administrar dispositivos, cierra la sesión del Chromebook; luego elimina el perfil propietario en el equipo.'},
+          {t:'El dispositivo ya no está en tu lista de dispositivos de Google',w:'Confirma que está desvinculado en línea.',h:'El Chromebook ya no aparece en tus dispositivos de Google.'},
+          {t:'Hiciste un Powerwash / restablecimiento de fábrica',w:'Borra los perfiles y datos locales.',h:'Ejecutaste Powerwash (restablecimiento de fábrica) en el Chromebook.'},
+          {t:'(Si es un Chromebook escolar/de empresa) está dado de baja en la consola de administración de Google',w:'Los Chromebook con inscripción de empresa se reinscriben tras un borrado si no se dan de baja.',h:'TI lo dio de baja en la consola — de lo contrario, se reinscribe.'}
+        ]}
+      }
+    },
+    en:{
+      subtitle:'Device return',
+      footer:'Made with care · PCaudit · Your progress is saved in this browser.',
+      begin:'Let’s begin', back:'Back', restart:'Start over', startOver:'Start over with another device',
+      helpTitle:'Not sure how?', helpSub:'Open the detailed how-to without leaving this page.',
+      reassure:'Is one step giving you trouble? That’s okay. Open the <span class="ilink" data-guide-full>full guide</span> whenever you like.',
+      allDone:'You’re all set!', guideCap:'Restitution guide',
+      chooseDevice:'What are you returning?', chooseDeviceSub:'Pick your device type to see only the steps that apply to you.',
+      choosePhone:'What kind of phone or tablet?', chooseLaptop:'What kind of computer?',
+      recap:'Let’s confirm together that your {device} is fully cleared',
+      celebrate:'Your {device} is completely unlinked and ready to return without a hitch. Thank you for being so thorough.',
+      nudge:'Have you done the earlier steps first? You can still continue — we just want to make sure nothing gets skipped.',
+      prog:function(d,t){return d===t?'All done! '+t+' of '+t+' ✓':'Progress: '+d+' of '+t+' checked';},
+      welcome:{title:'Before you return your device', lead:'We’ll get everything ready together — a few minutes, no fuss.',
+        p1:'You’re about to return a device that’s part of a <b>lease agreement</b>. Before it goes back, it needs to be <b>completely free</b>: signed out of your accounts, cleared of your personal information, and with no locks left on it.',
+        why:'<b>Why it matters:</b> if the device comes back still linked to your account or locked, it can’t be processed. That usually means <b>delays, extra charges and possible penalties</b> under the lease — all easy to avoid by taking a few minutes now.',
+        p3:'Don’t worry: we’ll walk you through it <b>step by step</b>, no rush. First tell us what you’re returning and we’ll show only what applies to you.',
+        hint:'Only takes a few minutes · Your progress saves itself'},
+      categories:{phone:{name:'Smartphone or tablet',desc:'iPhone, iPad or Android'},laptop:{name:'Laptop or desktop',desc:'Windows PC or Mac'},chromebook:{name:'Chromebook',desc:'Runs ChromeOS'}},
+      platforms:{apple:{name:'Apple (iPhone / iPad)',desc:'iPhone or iPad'},android:{name:'Android',desc:'Samsung, Pixel, Xiaomi, etc.'},windows:{name:'Windows',desc:'Dell, HP, Lenovo, etc.'},mac:{name:'Mac',desc:'MacBook, iMac, Mac mini'}},
+      devices:{
+        apple:{name:'iPhone / iPad', chips:[{l:'iPhone / iPad',g:'apple'}], steps:[
+          {t:'You signed out of iCloud (your Apple Account)',w:'Your Apple Account is the key that ties the device to you.',h:'In Settings, your name no longer appears at the top.'},
+          {t:'The device is gone from your Apple device list',w:'This confirms the unlink reached iCloud, not just the device.',h:'In the Find My app (or your Apple Account page) the device is no longer listed.'},
+          {t:'Find My / Activation Lock is off',w:'This is the lock that would stop the next owner from using it.',h:'The device no longer shows in Find My, and setup won’t ask for your Apple ID.'},
+          {t:'You erased everything',w:'Your data and settings are wiped from the device.',h:'You used Settings ▸ General ▸ Transfer or Reset ▸ Erase All Content and Settings.'},
+          {t:'The welcome screen doesn’t ask for your Apple ID — the real test',w:'If setup asks for your Apple ID, it’s still locked. If not, it’s truly free.',h:'Power it on; you reach setup without being asked for the previous Apple Account.'},
+          {t:'(If it was a work device) it’s released from management',w:'Managed devices can re-lock themselves after a reset.',h:'Setup shows no “managed by…” message and it doesn’t re-enrol on its own.'}
+        ]},
+        android:{name:'Android phone', chips:[{l:'Google account',g:'google'},{l:'Samsung',g:'samsung'}], steps:[
+          {t:'You removed your accounts from the phone',w:'Remove your Google account (and Samsung / Mi / Huawei if any) — this is what frees the phone.',h:'Settings ▸ Accounts ▸ remove each account.'},
+          {t:'The device is gone from your Google device list',w:'Confirms the unlink reached the cloud.',h:'At myaccount.google.com the device is no longer listed.'},
+          {t:'You erased it — after removing the account',w:'Removing the account first stops FRP (Factory Reset Protection) from locking the phone after the reset.',h:'You did the factory reset only once the accounts were removed.'},
+          {t:'The welcome screen doesn’t ask for the previous Google account — the real test',w:'If it asks for the old Google login, FRP is still on. If not, it’s truly free.',h:'Power it on and move through setup without the previous account being requested.'},
+          {t:'(If it was a work device) it’s released from management',w:'Knox, zero-touch or Intune can re-enrol it after a reset.',h:'Setup shows no management message and it doesn’t re-enrol by itself.'}
+        ]},
+        windows:{name:'Windows PC', chips:[{l:'Windows PC',g:'windows'}], steps:[
+          {t:'You signed out / removed your Microsoft account',w:'It links the PC to you.',h:'Settings ▸ Accounts — your account is removed.'},
+          {t:'The device is gone from your Microsoft account device list',w:'Confirms it’s detached from your account online.',h:'At account.microsoft.com/devices the PC is no longer listed.'},
+          {t:'(If the drive is encrypted) you saved the BitLocker recovery key',w:'Without it you can be locked out when wiping or reinstalling.',h:'You have the key from your Microsoft/Entra account, or BitLocker is off.'},
+          {t:'You reset the PC',w:'Your data and settings are wiped.',h:'You used Settings ▸ Reset this PC ▸ Remove everything.'},
+          {t:'(If it was a work PC) removed from Intune and deregistered from Autopilot',w:'“Retire” alone leaves Autopilot, so it re-enrols after reset.',h:'IT removed it from Intune and from Windows Autopilot devices.'}
+        ]},
+        mac:{name:'Mac', chips:[{l:'Mac',g:'mac'}], steps:[
+          {t:'You signed out of your Apple Account and turned off Find My',w:'Your Apple Account ties the Mac to you.',h:'System Settings ▸ your name ▸ Sign Out.'},
+          {t:'The device is gone from your Apple device list',w:'Confirms the unlink reached iCloud.',h:'In Find My (or your Apple Account page) the Mac is no longer listed.'},
+          {t:'Find My / Activation Lock is off',w:'Apple-silicon Macs also have a firmware-level lock tied to Find My.',h:'Signing out / turning off Find My clears it.'},
+          {t:'You erased everything',w:'Your data and settings are wiped.',h:'You used System Settings ▸ General ▸ Transfer or Reset ▸ Erase All Content and Settings.'},
+          {t:'The setup screen doesn’t ask for your Apple ID — the real test',w:'If setup asks for your Apple ID, it’s still locked.',h:'Power it on; you reach setup without the previous Apple Account.'},
+          {t:'(If it was a work Mac) it’s released from management',w:'Managed Macs can re-lock after a reset.',h:'Setup shows no “managed by…” message.'}
+        ]},
+        chromebook:{name:'Chromebook', chips:[{l:'Chromebook',g:'chromebook'}], steps:[
+          {t:'You signed out / removed your Google account (owner profile)',w:'The owner account ties the Chromebook to you.',h:'At myaccount.google.com ▸ Security ▸ Manage devices, sign the Chromebook out; then remove the owner profile on the device.'},
+          {t:'The device is gone from your Google device list',w:'Confirms it’s detached online.',h:'The Chromebook no longer appears in your Google devices.'},
+          {t:'You Powerwashed / factory reset it',w:'Wipes local profiles and data.',h:'You ran Powerwash (factory reset) on the Chromebook.'},
+          {t:'(If a school/work Chromebook) it’s deprovisioned in the Google Admin console',w:'Enterprise-enrolled Chromebooks re-enrol after a reset unless deprovisioned.',h:'IT deprovisioned it in the Admin console — otherwise it re-enrols.'}
+        ]}
+      }
+    },
+    it:{
+      subtitle:'Restituzione dispositivo',
+      footer:'Con cura · PCaudit · I tuoi progressi sono salvati in questo browser.',
+      begin:'Iniziamo', back:'Indietro', restart:'Ricomincia', startOver:'Ricomincia con un altro dispositivo',
+      helpTitle:'Non sai come fare?', helpSub:'Apri la spiegazione dettagliata senza lasciare questa pagina.',
+      reassure:'Un passaggio ti dà filo da torcere? Va bene. Apri la <span class="ilink" data-guide-full>guida completa</span> quando vuoi.',
+      allDone:'Tutto a posto!', guideCap:'Guida alla restituzione',
+      chooseDevice:'Cosa stai restituendo?', chooseDeviceSub:'Scegli il tipo di dispositivo per vedere solo i passaggi che ti riguardano.',
+      choosePhone:'Che tipo di telefono o tablet?', chooseLaptop:'Che tipo di computer?',
+      recap:'Confermiamo insieme che il tuo {device} sia del tutto pulito',
+      celebrate:'Il tuo {device} è completamente scollegato e pronto per essere restituito senza intoppi. Grazie per la tua cura.',
+      nudge:'Hai completato prima i passaggi precedenti? Puoi comunque continuare: vogliamo solo essere sicuri di non saltare nulla.',
+      prog:function(d,t){return d===t?'Fatto! '+t+' su '+t+' ✓':'Progresso: '+d+' su '+t+' verificati';},
+      welcome:{title:'Prima di restituire il dispositivo', lead:'Prepariamo tutto insieme: pochi minuti, senza complicazioni.',
+        p1:'Stai per restituire un dispositivo che fa parte di un <b>contratto di noleggio (leasing)</b>. Prima della restituzione deve essere <b>completamente libero</b>: disconnesso dai tuoi account, senza le tue informazioni personali e senza alcun blocco.',
+        why:'<b>Perché è importante:</b> se il dispositivo torna ancora collegato al tuo account o bloccato, non può essere elaborato. Questo di solito comporta <b>ritardi, costi aggiuntivi e possibili penali</b> previste dal contratto, tutte cose facili da evitare dedicando qualche minuto ora.',
+        p3:'Tranquillo: ti accompagniamo <b>passo dopo passo</b>, con calma. Dicci prima cosa stai restituendo e ti mostreremo solo ciò che ti riguarda.',
+        hint:'Bastano pochi minuti · I progressi si salvano da soli'},
+      categories:{phone:{name:'Smartphone o tablet',desc:'iPhone, iPad o Android'},laptop:{name:'Portatile o desktop',desc:'PC Windows o Mac'},chromebook:{name:'Chromebook',desc:'Funziona con ChromeOS'}},
+      platforms:{apple:{name:'Apple (iPhone / iPad)',desc:'iPhone o iPad'},android:{name:'Android',desc:'Samsung, Pixel, Xiaomi, ecc.'},windows:{name:'Windows',desc:'Dell, HP, Lenovo, ecc.'},mac:{name:'Mac',desc:'MacBook, iMac, Mac mini'}},
+      devices:{
+        apple:{name:'iPhone / iPad', chips:[{l:'iPhone / iPad',g:'apple'}], steps:[
+          {t:'Hai effettuato la disconnessione da iCloud (il tuo Account Apple)',w:'Il tuo Account Apple è la chiave che lega il dispositivo a te.',h:'In Impostazioni, il tuo nome non compare più in alto.'},
+          {t:'Il dispositivo non è più nel tuo elenco dispositivi Apple',w:'Conferma che lo scollegamento è arrivato a iCloud, non solo al dispositivo.',h:'Nell’app Dov’è (o nel tuo Account Apple) il dispositivo non compare più.'},
+          {t:'Dov’è / Blocco di attivazione è disattivato',w:'È il lucchetto che impedirebbe al prossimo proprietario di usarlo.',h:'Il dispositivo non compare più in Dov’è e la configurazione non chiede il tuo Apple ID.'},
+          {t:'Hai cancellato tutto',w:'I tuoi dati e le impostazioni spariscono dal dispositivo.',h:'Hai usato Impostazioni ▸ Generali ▸ Trasferisci o inizializza ▸ Inizializza contenuto e impostazioni.'},
+          {t:'La schermata di benvenuto non chiede il tuo Apple ID — la prova del nove',w:'Se la configurazione chiede il tuo Apple ID, è ancora bloccato. Se no, è davvero libero.',h:'Accendilo; arrivi alla configurazione senza che chieda l’Account Apple precedente.'},
+          {t:'(Se era un dispositivo aziendale) è stato rilasciato dalla gestione',w:'I dispositivi gestiti possono ribloccarsi dopo il ripristino.',h:'La configurazione non mostra messaggi «gestito da…» e non si re-iscrive da solo.'}
+        ]},
+        android:{name:'telefono Android', chips:[{l:'Account Google',g:'google'},{l:'Samsung',g:'samsung'}], steps:[
+          {t:'Hai rimosso i tuoi account dal telefono',w:'Rimuovi l’account Google (e Samsung / Mi / Huawei se presenti): è ciò che libera il telefono.',h:'Impostazioni ▸ Account ▸ rimuovi ogni account.'},
+          {t:'Il dispositivo non è più nel tuo elenco dispositivi Google',w:'Conferma che lo scollegamento è arrivato al cloud.',h:'Su myaccount.google.com il dispositivo non compare più.'},
+          {t:'L’hai cancellato, dopo aver rimosso l’account',w:'Rimuovere prima l’account evita che l’FRP blocchi il telefono dopo il ripristino.',h:'Hai fatto il ripristino di fabbrica solo dopo aver tolto gli account.'},
+          {t:'La schermata di benvenuto non chiede l’account Google precedente — la prova del nove',w:'Se chiede il vecchio account Google, l’FRP è ancora attivo. Se no, è libero.',h:'Accendilo e prosegui nella configurazione senza che chieda l’account precedente.'},
+          {t:'(Se era un dispositivo aziendale) è stato rilasciato dalla gestione',w:'Knox, zero-touch o Intune possono re-iscriverlo dopo un ripristino.',h:'La configurazione non mostra messaggi di gestione e non si re-iscrive da solo.'}
+        ]},
+        windows:{name:'PC Windows', chips:[{l:'PC Windows',g:'windows'}], steps:[
+          {t:'Hai disconnesso / rimosso il tuo account Microsoft',w:'È quello che lega il PC a te.',h:'Impostazioni ▸ Account — il tuo account non c’è più.'},
+          {t:'Il dispositivo non è più nel tuo elenco dispositivi Microsoft',w:'Conferma che è scollegato dal tuo account online.',h:'Su account.microsoft.com/devices il PC non compare più.'},
+          {t:'(Se il disco è cifrato) hai salvato la chiave di ripristino BitLocker',w:'Senza di essa puoi restare bloccato durante cancellazione o reinstallazione.',h:'Hai la chiave dal tuo account Microsoft/Entra, oppure BitLocker è disattivato.'},
+          {t:'Hai ripristinato il PC',w:'I tuoi dati e le impostazioni vengono cancellati.',h:'Hai usato Impostazioni ▸ Reimposta il PC ▸ Rimuovi tutto.'},
+          {t:'(Se era un PC aziendale) rimosso da Intune e cancellato da Autopilot',w:'«Ritira» da solo lascia Autopilot, quindi si re-iscrive dopo il ripristino.',h:'L’IT lo ha rimosso da Intune e dai dispositivi Windows Autopilot.'}
+        ]},
+        mac:{name:'Mac', chips:[{l:'Mac',g:'mac'}], steps:[
+          {t:'Hai disconnesso il tuo Account Apple e disattivato Dov’è',w:'Il tuo Account Apple lega il Mac a te.',h:'Impostazioni di Sistema ▸ il tuo nome ▸ Esci.'},
+          {t:'Il dispositivo non è più nel tuo elenco dispositivi Apple',w:'Conferma che lo scollegamento è arrivato a iCloud.',h:'In Dov’è (o nel tuo Account Apple) il Mac non compare più.'},
+          {t:'Dov’è / Blocco di attivazione è disattivato',w:'I Mac con chip Apple hanno anche un blocco a livello di firmware legato a Dov’è.',h:'Uscire / disattivare Dov’è lo rimuove.'},
+          {t:'Hai cancellato tutto',w:'I tuoi dati e le impostazioni vengono cancellati.',h:'Hai usato Impostazioni di Sistema ▸ Generali ▸ Trasferisci o inizializza ▸ Inizializza contenuto e impostazioni.'},
+          {t:'La schermata di benvenuto non chiede il tuo Apple ID — la prova del nove',w:'Se la configurazione chiede il tuo Apple ID, è ancora bloccato.',h:'Accendilo; arrivi alla configurazione senza l’Account Apple precedente.'},
+          {t:'(Se era un Mac aziendale) è stato rilasciato dalla gestione',w:'I Mac gestiti possono ribloccarsi dopo il ripristino.',h:'La configurazione non mostra messaggi «gestito da…».'}
+        ]},
+        chromebook:{name:'Chromebook', chips:[{l:'Chromebook',g:'chromebook'}], steps:[
+          {t:'Hai disconnesso / rimosso il tuo account Google (profilo proprietario)',w:'L’account proprietario lega il Chromebook a te.',h:'Su myaccount.google.com ▸ Sicurezza ▸ Gestisci dispositivi, disconnetti il Chromebook; poi rimuovi il profilo proprietario sul dispositivo.'},
+          {t:'Il dispositivo non è più nel tuo elenco dispositivi Google',w:'Conferma che è scollegato online.',h:'Il Chromebook non compare più nei tuoi dispositivi Google.'},
+          {t:'Hai eseguito un Powerwash / ripristino di fabbrica',w:'Cancella profili e dati locali.',h:'Hai eseguito il Powerwash (ripristino di fabbrica) sul Chromebook.'},
+          {t:'(Se è un Chromebook scolastico/aziendale) è stato deprovisionato nella Console di amministrazione Google',w:'I Chromebook con registrazione aziendale si re-iscrivono dopo un ripristino se non deprovisionati.',h:'L’IT lo ha deprovisionato nella Console — altrimenti si re-iscrive.'}
+        ]}
+      }
+    }
+  };
+
+  /* ---------- state ---------- */
+  var state={screen:'welcome', category:null, device:null, lang:'it'};
+  var app=document.getElementById('app');
+
+  function t(){return I18N[state.lang];}
+  function devName(){return state.device?t().devices[state.device].name:'';}
+
+  /* ---------- render ---------- */
+  function render(){
+    var s=state.screen;
+    body.classList.toggle('on-checklist', s==='checklist');
+    if(s==='welcome') app.innerHTML=viewWelcome();
+    else if(s==='category') app.innerHTML=viewCategory();
+    else if(s==='platform') app.innerHTML=viewPlatform();
+    else if(s==='checklist'){ app.innerHTML=viewChecklist(); loadChecks(); }
+    updateProgress();
+    window.scrollTo({top:0});
+  }
+
+  function viewWelcome(){
+    var w=t().welcome;
+    return '<div class="hero">'
+      +'<svg class="heart" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.5 2 5 5.4 5c2 0 3.3 1.1 4.1 2.3C10.3 6.1 11.6 5 13.6 5 17 5 18.5 8.5 17 11.7 14.5 16.4 12 21 12 21z"/></svg>'
+      +'<h1>'+w.title+'</h1><p class="lead">'+w.lead+'</p></div>'
+      +'<div class="intro-card"><p>'+w.p1+'</p><p class="why">'+w.why+'</p><p>'+w.p3+'</p></div>'
+      +'<div class="start-row"><button class="start-btn" data-go="category">'+t().begin+'</button>'
+      +'<div class="start-hint">'+w.hint+'</div></div>';
+  }
+
+  function backHead(target){
+    return '<div class="screen-head"><button class="back-btn" data-go="'+target+'">'+IC.chevL+' '+t().back+'</button></div>';
+  }
+
+  function choiceCard(attr,val,icon,name,desc){
+    return '<button class="choice" '+attr+'="'+val+'">'
+      +'<span class="choice-ic">'+icon+'</span>'
+      +'<span class="choice-tx"><b>'+name+'</b><small>'+desc+'</small></span>'
+      +'<span class="choice-arrow">'+IC.chevR+'</span></button>';
+  }
+
+  function viewCategory(){
+    var c=t().categories;
+    return backHead('welcome')
+      +'<h2 class="screen-title">'+t().chooseDevice+'</h2>'
+      +'<p class="screen-sub">'+t().chooseDeviceSub+'</p>'
+      +'<div class="choice-grid">'
+      +choiceCard('data-cat','phone',catIcon('phone'),c.phone.name,c.phone.desc)
+      +choiceCard('data-cat','laptop',catIcon('laptop'),c.laptop.name,c.laptop.desc)
+      +choiceCard('data-cat','chromebook',catIcon('chromebook'),c.chromebook.name,c.chromebook.desc)
+      +'</div>';
+  }
+
+  function viewPlatform(){
+    var p=t().platforms;
+    var opts = state.category==='phone' ? ['apple','android'] : ['windows','mac'];
+    var title = state.category==='phone' ? t().choosePhone : t().chooseLaptop;
+    var cards = opts.map(function(o){return choiceCard('data-device',o,platIcon(o),p[o].name,p[o].desc);}).join('');
+    return backHead('category')+'<h2 class="screen-title">'+title+'</h2><div class="choice-grid">'+cards+'</div>';
+  }
+
+  function viewChecklist(){
+    var dev=t().devices[state.device];
+    var backTarget = state.category==='chromebook' ? 'category' : 'platform';
+    var chips=dev.chips.map(function(c){return '<button class="chip" data-guide="'+c.g+'" data-label="'+c.l+'">'+c.l+'</button>';}).join('');
+    var steps=dev.steps.map(function(s,i){
+      return '<div class="step" data-step="'+i+'"><div class="checkbox">'+IC.check+'</div>'
+        +'<div class="step-body"><h3>'+(i+1)+'. '+s.t+'</h3>'
+        +'<p class="why">'+s.w+'</p>'
+        +'<div class="how">'+s.h+'</div>'
+        +'<div class="nudge">'+IC.warn+'<span>'+t().nudge+'</span></div></div></div>';
+    }).join('');
+    var cel=t().celebrate.replace('{device}',devName());
+    return backHead(backTarget)
+      +'<div class="help-card"><div class="h-title">'+IC.help+t().helpTitle+'</div>'
+      +'<div class="h-sub">'+t().helpSub+'</div><div class="help-chips">'+chips+'</div></div>'
+      +steps
+      +'<div class="reassure">'+IC.info+'<div>'+t().reassure+'</div></div>'
+      +'<div class="celebrate" id="celebrate">'+IC.checkBig+'<h2>'+t().allDone+'</h2><p>'+cel+'</p>'
+      +'<button class="restart-btn" data-act="another">'+restartIcon()+t().startOver+'</button></div>';
+  }
+  function restartIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></svg>';}
+
+  /* ---------- checks / progress ---------- */
+  function checkKey(){return 'pcaudit-confirm-'+state.device;}
+  function saveChecks(){
+    var arr=[];app.querySelectorAll('[data-step]').forEach(function(s){arr.push(s.classList.contains('done')?1:0);});
+    try{localStorage.setItem(checkKey(),JSON.stringify(arr));}catch(e){}
+  }
+  function loadChecks(){
+    var arr=[];try{arr=JSON.parse(localStorage.getItem(checkKey())||'[]');}catch(e){}
+    app.querySelectorAll('[data-step]').forEach(function(s,i){s.classList.toggle('done',arr[i]===1);});
+  }
+  function clearChecks(){try{localStorage.removeItem(checkKey());}catch(e){}}
+
+  function updateNudges(){
+    var priorMissing=false;
+    app.querySelectorAll('[data-step]').forEach(function(s){
+      var done=s.classList.contains('done');
+      var n=s.querySelector('.nudge');
+      if(n)n.classList.toggle('show',done&&priorMissing);
+      if(!done)priorMissing=true;
+    });
+  }
+  function updateProgress(){
+    if(state.screen!=='checklist')return;
+    var steps=app.querySelectorAll('[data-step]');
+    var done=app.querySelectorAll('[data-step].done').length;
+    var total=steps.length;
+    document.getElementById('progress-fill').style.width=(total?Math.round(done/total*100):0)+'%';
+    document.getElementById('progress-label').textContent=t().prog(done,total);
+    document.getElementById('progress-title').textContent=t().recap.replace('{device}',devName());
+    document.getElementById('restart-label').textContent=t().restart;
+    var cel=document.getElementById('celebrate');
+    if(cel)cel.classList.toggle('show',done===total&&total>0);
+    updateNudges();
+  }
+
+  /* ---------- navigation ---------- */
+  function go(screen){state.screen=screen;render();}
+  function chooseCat(cat){
+    state.category=cat;
+    if(cat==='chromebook'){state.device='chromebook';state.screen='checklist';}
+    else{state.device=null;state.screen='platform';}
+    render();
+  }
+  function chooseDevice(dev){state.device=dev;state.screen='checklist';render();}
+  function homeReset(){if(state.device)clearChecks();state.device=null;state.category=null;state.screen='welcome';render();}
+  function anotherDevice(){if(state.device)clearChecks();state.device=null;state.category=null;state.screen='category';render();}
+
+  /* ---------- events ---------- */
+  app.addEventListener('click',function(e){
+    var el;
+    if(el=e.target.closest('[data-go]')){go(el.getAttribute('data-go'));return;}
+    if(el=e.target.closest('[data-cat]')){chooseCat(el.getAttribute('data-cat'));return;}
+    if(el=e.target.closest('[data-device]')){chooseDevice(el.getAttribute('data-device'));return;}
+    if(el=e.target.closest('[data-act]')){if(el.getAttribute('data-act')==='another')anotherDevice();return;}
+    if(el=e.target.closest('[data-guide]')){openGuide('pcaudit.html#'+state.lang+'-'+el.getAttribute('data-guide'),el.getAttribute('data-label')||'');return;}
+    if(el=e.target.closest('[data-guide-full]')){openGuide('pcaudit.html',t().guideCap);return;}
+    if(el=e.target.closest('[data-step]')){el.classList.toggle('done');saveChecks();updateProgress();return;}
+  });
+  document.querySelector('[data-act="home"]').addEventListener('click',homeReset);
+
+  /* ---------- guide drawer ---------- */
+  var overlay=document.getElementById('guide-overlay');
+  var frame=document.getElementById('guide-frame');
+  var gtitle=document.getElementById('guide-title');
+  function scrollFrameTo(id){if(!id)return;try{var doc=frame.contentDocument;if(doc){var elx=doc.getElementById(id);if(elx)elx.scrollIntoView();}}catch(e){}}
+  function openGuide(href,label){
+    var id=(href.split('#')[1]||'');
+    frame.onload=function(){scrollFrameTo(id);setTimeout(function(){scrollFrameTo(id);},180);setTimeout(function(){scrollFrameTo(id);},500);};
+    frame.src=href;
+    gtitle.innerHTML='<small>'+t().guideCap+'</small>'+(label||'');
+    overlay.classList.add('open');body.style.overflow='hidden';
+  }
+  function closeGuide(){overlay.classList.remove('open');body.style.overflow='';setTimeout(function(){frame.src='about:blank';},280);}
+  document.getElementById('guide-close').addEventListener('click',closeGuide);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeGuide();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closeGuide();});
+
+  /* ---------- language & theme ---------- */
+  function setLang(l){
+    state.lang=l;
+    document.querySelectorAll('[data-langbtn]').forEach(function(x){x.classList.toggle('btn-primary',x.dataset.langbtn===l);});
+    document.getElementById('footer').textContent=t().footer;
+    root.lang=l;
+    try{localStorage.setItem('pcaudit-confirm-lang',l);}catch(e){}
+    render();
+  }
+  document.querySelectorAll('[data-langbtn]').forEach(function(x){x.addEventListener('click',function(){setLang(x.dataset.langbtn);});});
+
+  var toggle=document.getElementById('theme-toggle');
+  function setTheme(th){root.dataset.theme=th;toggle.textContent=th==='dark'?'☀️':'🌙';try{localStorage.setItem('pcaudit-theme',th);}catch(e){}}
+  toggle.addEventListener('click',function(){setTheme(root.dataset.theme==='dark'?'light':'dark');});
+
+  /* ---------- init ---------- */
+  var sl='it',st='light';
+  try{sl=localStorage.getItem('pcaudit-confirm-lang')||'it';st=localStorage.getItem('pcaudit-theme')||'light';}catch(e){}
+  setTheme(st);
+  setLang(sl);
+})();
+</script>
+</body>
+</html>

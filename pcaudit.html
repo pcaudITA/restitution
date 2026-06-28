@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>restitution.pcaudit.tech</title>
+<meta name="description" content="Guía para desvincular y desbloquear dispositivos (cuentas y bloqueos MDM) antes de borrar o revender. Trilingüe ES/EN/IT, archivo único autónomo.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --bg-primary:#f8fafc; --bg-secondary:#fff; --bg-tertiary:#f1f5f9;
+  --text-primary:#0f172a; --text-secondary:#475569; --text-muted:#94a3b8;
+  --border-color:#cbd5e1; --border-focus:#3b82f6;
+  --accent-primary:#3b82f6; --accent-sender:#ef4444; --accent-carrier:#10b981; --accent-warning:#f59e0b;
+  --card-shadow:0 4px 6px -1px rgb(0 0 0 / .05),0 2px 4px -2px rgb(0 0 0 / .05);
+  --glass-bg:rgba(255,255,255,.7); --glass-border:rgba(255,255,255,.5); --glass-blur:12px;
+}
+[data-theme="dark"]{
+  --bg-primary:#0f172a; --bg-secondary:#1e293b; --bg-tertiary:#334155;
+  --text-primary:#f8fafc; --text-secondary:#cbd5e1; --text-muted:#64748b;
+  --border-color:#475569; --border-focus:#60a5fa;
+  --accent-primary:#60a5fa; --accent-sender:#f87171; --accent-carrier:#34d399; --accent-warning:#fbbf24;
+  --card-shadow:0 10px 15px -3px rgb(0 0 0 / .3),0 4px 6px -4px rgb(0 0 0 / .3);
+  --glass-bg:rgba(30,41,59,.7); --glass-border:rgba(255,255,255,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;transition:background-color .3s,color .3s}
+a{color:var(--accent-primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{position:sticky;top:0;z-index:100;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-bottom:1px solid var(--glass-border);padding:.85rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:var(--card-shadow)}
+.logo{display:flex;align-items:center;text-decoration:none}
+.brand-logo{height:26px;width:auto;display:block}
+[data-theme="dark"] .brand-logo{filter:invert(1)}
+.nav-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.btn{font-family:inherit;font-size:.82rem;font-weight:600;padding:.42rem .8rem;border-radius:.5rem;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .2s}
+.btn:hover{background:var(--bg-tertiary);border-color:var(--text-muted)}
+.btn-primary{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
+.btn-primary:hover{background:#2563eb;border-color:#2563eb}
+.lang-group{display:flex;gap:.25rem;border:1px solid var(--border-color);border-radius:.6rem;padding:.2rem;background:var(--bg-secondary)}
+.lang-group .btn{border:none;padding:.32rem .6rem}
+.btn-icon{padding:.45rem;border-radius:50%;aspect-ratio:1;font-size:.95rem;line-height:1}
+
+main{max-width:920px;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+body.embedded header{display:none}
+body.embedded main{padding-top:1.2rem}
+body.embedded .section-title{scroll-margin-top:1rem}
+body.embedded .card h3{scroll-margin-top:1rem}
+.page-head{margin:1rem 0 1.5rem}
+.page-head h1{font-size:1.85rem;font-weight:700;letter-spacing:-.01em}
+.page-head p{color:var(--text-secondary);margin-top:.4rem;max-width:60ch}
+
+.callout{display:flex;gap:.75rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-left:4px solid var(--accent-warning);border-radius:.7rem;padding:.9rem 1.1rem;margin:1.25rem 0;box-shadow:var(--card-shadow)}
+.callout svg{flex-shrink:0;width:20px;height:20px;color:var(--accent-warning);margin-top:.15rem}
+.callout .c-body{font-size:.9rem;color:var(--text-secondary)}
+.callout .c-body strong{color:var(--text-primary)}
+
+.toc{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.25rem 0 2rem}
+.toc a{font-size:.8rem;font-weight:600;padding:.35rem .7rem;border-radius:2rem;background:var(--bg-tertiary);color:var(--text-secondary);border:1px solid var(--border-color)}
+.toc a:hover{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary);text-decoration:none}
+
+.section-title{font-size:1.35rem;font-weight:700;margin:2.5rem 0 .4rem;padding-bottom:.4rem;border-bottom:2px solid var(--border-color);scroll-margin-top:5rem}
+.section-title:first-of-type{margin-top:1rem}
+
+.card{background:var(--bg-secondary);border:1px solid var(--border-color);border-left:4px solid var(--accent-primary);border-radius:.8rem;box-shadow:var(--card-shadow);padding:1.15rem 1.3rem;margin:1rem 0}
+.card.enterprise{border-left-color:var(--accent-warning)}
+.card h3{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;scroll-margin-top:5.5rem}
+.card h4{font-size:.92rem;font-weight:600;margin:1rem 0 .35rem;color:var(--text-secondary)}
+.card p{font-size:.9rem;color:var(--text-secondary);margin:.5rem 0}
+.tag{font-size:.6rem;font-weight:700;color:#fff;border-radius:.3rem;padding:.12rem .4rem;text-transform:uppercase;letter-spacing:.03em}
+.tag.personal{background:var(--accent-primary)}
+.tag.enterprise{background:var(--accent-warning)}
+.tag.new{background:var(--accent-carrier)}
+
+ol,ul{margin:.5rem 0 .5rem 1.3rem;font-size:.9rem;color:var(--text-secondary)}
+li{margin:.35rem 0}
+li strong,p strong{color:var(--text-primary);font-weight:600}
+code{font-family:'JetBrains Mono',monospace;font-size:.82em;background:var(--bg-tertiary);padding:.1rem .35rem;border-radius:.3rem;color:var(--text-primary)}
+
+.note{font-size:.82rem;color:var(--text-muted);background:var(--bg-tertiary);border-radius:.5rem;padding:.55rem .8rem;margin:.6rem 0}
+
+footer{max-width:920px;margin:0 auto;padding:1.5rem 1.1rem 3rem;border-top:1px solid var(--border-color);color:var(--text-muted);font-size:.82rem}
+
+[data-langblock]{display:none}
+[data-langblock].active{display:block;animation:fadeIn .25s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html" aria-label="PCaudit">
+    <img class="brand-logo" src="pcaudit-logo.svg" alt="PCaudit">
+  </a>
+  <div class="nav-actions">
+    <div class="lang-group">
+      <button class="btn btn-primary" data-langbtn="it">IT</button>
+      <button class="btn" data-langbtn="en">EN</button>
+      <button class="btn" data-langbtn="es">ES</button>
+    </div>
+    <button class="btn btn-icon" id="theme-toggle" title="Tema claro / oscuro">🌙</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================================================================== -->
+<!-- ESPAÑOL                                                               -->
+<!-- ===================================================================== -->
+<div data-langblock="es" class="active">
+  <div class="page-head">
+    <h1>Guía de restitución</h1>
+    <p>Cómo desvincular y desbloquear un dispositivo (cuentas personales y bloqueos de gestión/MDM) antes de borrarlo o revenderlo.</p>
+  </div>
+
+  <div class="callout">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>
+    <div class="c-body"><strong>Antes de restablecer de fábrica, elimina primero todas las cuentas y bloqueos de gestión.</strong> Si borras el dispositivo antes de hacerlo, suele quedar bloqueado (Bloqueo de Activación de Apple, FRP de Android, o re-inscripción automática en MDM).</div>
+  </div>
+
+  <div class="toc">
+    <a href="#es-moviles">Móviles</a>
+    <a href="#es-portatiles">Portátiles</a>
+  </div>
+
+  <h2 class="section-title" id="es-moviles">Móviles</h2>
+
+  <div class="card">
+    <h3 id="es-apple">Apple — iCloud y Bloqueo de Activación <span class="tag personal">Personal</span></h3>
+    <h4>Si todavía tienes el iPhone o iPad</h4>
+    <ol>
+      <li>Si enlazaste un Apple Watch, desenlázalo primero.</li>
+      <li>Cierra sesión de iCloud: <strong>Configuración</strong> &gt; <strong>[tu nombre]</strong> &gt; baja hasta el final &gt; <strong>Cerrar sesión</strong>. Introduce la contraseña de tu Cuenta Apple (Apple ID) y toca <strong>Desactivar</strong>.</li>
+      <li>Ve a <strong>Configuración</strong> &gt; <strong>General</strong> &gt; <strong>Transferir o restablecer [dispositivo]</strong> &gt; <strong>Borrar contenido y configuración</strong>. Si <strong>Buscar</strong> está activado, puede pedirte la contraseña del Apple ID. Si usa eSIM, elige borrar el dispositivo y el perfil de eSIM (o conservar la eSIM si transfieres la línea).</li>
+      <li>Si se solicita el código del dispositivo o de Tiempo de uso, introdúcelo y toca <strong>Borrar</strong>.</li>
+      <li>Contacta con tu operador para transferir el servicio al nuevo propietario.</li>
+      <li>Elimina el dispositivo de tu lista de dispositivos de confianza (página de tu Cuenta Apple).</li>
+    </ol>
+    <h4>Si ya no tienes el dispositivo</h4>
+    <ol>
+      <li>Inicia sesión en <code>iCloud.com/find</code> o en la app <strong>Buscar</strong> desde otro dispositivo, selecciona el dispositivo, toca <strong>Borrar</strong> y luego <strong>Eliminar de la cuenta</strong>.</li>
+      <li>Si no puedes, cambia la contraseña de tu Cuenta Apple para que el nuevo propietario no pueda usar iCloud.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Apple — Bloqueo de Activación en dispositivos supervisados / MDM <span class="tag enterprise">Empresa</span></h3>
+    <p>Los iPhone/iPad de empresa inscritos en <strong>Apple Business Manager (ABM)</strong> o <strong>Apple School Manager</strong> mantienen el Bloqueo de Activación aunque el usuario cierre sesión. Para eliminarlo:</p>
+    <ol>
+      <li>Entra en ABM/ASM como <strong>Administrador</strong> o <strong>Gestor de inscripción de dispositivos</strong>.</li>
+      <li>Localiza el dispositivo por su número de serie.</li>
+      <li>Selecciona <strong>Desactivar Bloqueo de Activación</strong> (o <strong>Liberar dispositivo</strong> para quitarlo también del MDM/ADE y que no vuelva a inscribirse tras el borrado).</li>
+      <li>Alternativa por MDM: envía un <strong>código de omisión del Bloqueo de Activación</strong> (el dispositivo debe estar supervisado). En la pantalla de bloqueo, deja el usuario en blanco e introduce el código en el campo de contraseña.</li>
+      <li>Si el dispositivo no está en tu ABM/MDM, contacta con el soporte Apple Business / AppleCare Enterprise con la prueba de compra.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 id="es-samsung">Samsung — cuenta Samsung <span class="tag personal">Personal</span></h3>
+    <ol>
+      <li>Inicia sesión en <code>account.samsung.com</code>.</li>
+      <li>Abre el panel <strong>Dispositivos</strong>.</li>
+      <li>Selecciona el dispositivo que quieres eliminar.</li>
+      <li>Haz clic en <strong>Desconectar</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Samsung — Knox Mobile Enrollment / Knox Guard <span class="tag enterprise">Empresa</span></h3>
+    <p>Los Samsung corporativos inscritos vía Knox se vuelven a inscribir o siguen bloqueados aunque elimines la cuenta personal.</p>
+    <ol>
+      <li>Inicia sesión en el portal Knox (<strong>Knox Mobile Enrollment</strong> / <strong>Knox Manage</strong>).</li>
+      <li>Busca el dispositivo por IMEI o número de serie.</li>
+      <li>Elimínalo de KME (y libéralo/desbloquéalo en Knox Guard si se usa).</li>
+    </ol>
+    <p class="note">Knox ya no omite el FRP (Factory Reset Protection) en Android 15 o superior, así que también debes eliminar la cuenta Google.</p>
+  </div>
+
+  <div class="card">
+    <h3 id="es-google">Google / Android — cuenta Google y FRP <span class="tag personal">Personal</span></h3>
+    <p>Elimina <strong>siempre</strong> la cuenta Google <strong>antes</strong> del restablecimiento de fábrica; de lo contrario, el FRP bloquea el teléfono y pide la cuenta Google anterior tras el reinicio.</p>
+    <h4>En el dispositivo</h4>
+    <ol>
+      <li><strong>Configuración</strong> &gt; <strong>Cuentas</strong> (o <strong>Contraseñas y cuentas</strong>) &gt; <strong>Google</strong> &gt; <strong>Eliminar cuenta</strong>.</li>
+    </ol>
+    <h4>De forma remota / desde otro dispositivo</h4>
+    <ol>
+      <li>Abre <code>myaccount.google.com/device-activity</code>.</li>
+      <li>Selecciona el dispositivo.</li>
+      <li>Pulsa los tres puntos &gt; <strong>Cerrar sesión</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Android — zero-touch enrollment <span class="tag enterprise">Empresa</span></h3>
+    <p>Los dispositivos en <strong>Android zero-touch</strong> se reaprovisionan en el MDM tras cada borrado. Elimina el dispositivo de la consola zero-touch (o pide al distribuidor que lo haga) antes de revenderlo.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Otras marcas Android — Mi Account, Huawei ID, etc.</h3>
+    <p>Xiaomi/Redmi/POCO (<strong>Mi Account</strong>), <strong>Huawei ID</strong>, OPPO/Realme/vivo añaden su propio bloqueo de cuenta. Elimina esa cuenta en Ajustes antes de restablecer; para la mayoría no existe un método oficial de omisión.</p>
+  </div>
+
+  <div class="card">
+    <h3>Microsoft Intune / Autopilot (móvil) <span class="tag enterprise">Empresa</span></h3>
+    <ol>
+      <li>Inicia sesión en el <strong>centro de administración de Microsoft Intune</strong>.</li>
+      <li><strong>Dispositivos</strong> &gt; <strong>Todos los dispositivos</strong>.</li>
+      <li>Selecciona el dispositivo a retirar.</li>
+      <li>Haz clic en <strong>Retirar</strong> &gt; <strong>Sí</strong>. (Se propaga en menos de 15 min si está encendido y conectado.)</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Bloqueo de red / SIM del operador</h3>
+    <p>Un teléfono bloqueado a un operador necesita el desbloqueo de red del propio operador para funcionar en otra red. Es independiente de cualquier bloqueo de cuenta.</p>
+  </div>
+
+  <h2 class="section-title" id="es-portatiles">Portátiles</h2>
+
+  <div class="card">
+    <h3>Chromebook — Enterprise Enrollment (dar de baja) <span class="tag enterprise">Empresa</span></h3>
+    <ol>
+      <li>Inicia sesión en la <strong>consola de administración de Google</strong>.</li>
+      <li><strong>Dispositivos</strong> &gt; <strong>Chrome</strong> &gt; <strong>Dispositivos</strong>.</li>
+      <li>Filtra por estado y selecciona la unidad organizativa correcta.</li>
+      <li>Marca la casilla del dispositivo (o dispositivos).</li>
+      <li>Haz clic en <strong>Dar de baja</strong> los dispositivos seleccionados.</li>
+      <li>Elige restablecer el estado de fábrica (elimina perfiles de usuario, políticas y registro).</li>
+      <li>Confirma y selecciona el motivo si se requiere (no hace falta con licencias anuales / Chrome Enterprise Upgrade).</li>
+      <li>Haz clic en <strong>Dar de baja</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 id="es-chromebook">Chromebook — cuenta Google personal <span class="tag personal">Personal</span></h3>
+    <p class="note">Corregido: anteriormente esta sección figuraba por error como «iCloud».</p>
+    <ol>
+      <li>En cualquier dispositivo (que no sea el Chromebook), abre <code>myaccount.google.com</code>.</li>
+      <li><strong>Seguridad</strong> &gt; <strong>Administrar dispositivos</strong>.</li>
+      <li>Localiza el Chromebook.</li>
+      <li>Pulsa los tres puntos &gt; <strong>Cerrar sesión</strong>.</li>
+      <li>En el Chromebook, cierra la sesión del perfil propietario.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3 id="es-windows">Microsoft — retirar en Intune + dar de baja en Autopilot <span class="tag enterprise">Empresa</span></h3>
+    <p><strong>Retirar</strong> borra el equipo pero <strong>no</strong> elimina el registro de Autopilot; al restablecerlo se vuelve a inscribir en la organización. Haz ambos pasos:</p>
+    <ol>
+      <li>Centro de Intune &gt; <strong>Dispositivos</strong> &gt; <strong>Todos los dispositivos</strong> &gt; selecciona el equipo &gt; <strong>Retirar</strong>.</li>
+      <li>Después: <strong>Dispositivos</strong> &gt; <strong>Windows</strong> &gt; <strong>Inscripción</strong> &gt; <strong>Dispositivos de Windows Autopilot</strong> &gt; busca por número de serie &gt; <strong>Eliminar</strong> (dar de baja).</li>
+    </ol>
+    <p class="note">En equipos unidos a Entra no hace falta un paso extra en Entra tras la baja; evita eliminarlos manualmente de Entra ID.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Windows — unión a Entra ID / Azure AD y BitLocker</h3>
+    <ul>
+      <li>El Windows unido a Azure AD/Entra se reasocia con la organización; elimínalo vía Intune/Entra como se indica arriba.</li>
+      <li>Si el disco está cifrado con <strong>BitLocker</strong>, necesitas la clave de recuperación para borrar o reinstalar. Recupérala de la cuenta Entra del propietario o de su cuenta Microsoft antes de borrar.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 id="es-mac">Apple Mac — iCloud y Bloqueo de Activación <span class="tag personal">Personal</span></h3>
+    <h4>Si todavía tienes el Mac</h4>
+    <ul>
+      <li><strong>macOS Ventura o posterior:</strong> menú <strong>Apple</strong> &gt; <strong>Ajustes del Sistema</strong> &gt; <strong>[tu nombre]</strong> &gt; baja hasta el final &gt; <strong>Cerrar sesión</strong>.</li>
+      <li><strong>macOS Monterey o anterior:</strong> menú <strong>Apple</strong> &gt; <strong>Preferencias del Sistema</strong> &gt; <strong>Apple ID</strong> &gt; <strong>Resumen</strong> &gt; <strong>Cerrar sesión</strong>.</li>
+    </ul>
+    <p>Los pasos son los mismos en Sonoma, Sequoia y macOS 26. Después borra: <strong>Ajustes del Sistema</strong> &gt; <strong>General</strong> &gt; <strong>Transferir o restablecer</strong> &gt; <strong>Borrar contenido y configuración</strong>.</p>
+    <h4>Si ya no tienes el Mac</h4>
+    <ol>
+      <li>En <code>iCloud.com/find</code> o en <strong>Buscar</strong> desde otro dispositivo, selecciona el Mac &gt; <strong>Borrar</strong> &gt; <strong>Eliminar de la cuenta</strong>.</li>
+      <li>Si no puedes, cambia la contraseña de tu Cuenta Apple.</li>
+    </ol>
+    <p class="note">Los Mac con chip Apple también tienen un Bloqueo de Activación a nivel de firmware ligado a Buscar; cerrar sesión / desactivar Buscar lo libera.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Windows — contraseña de BIOS / UEFI</h3>
+    <p>Una contraseña de BIOS/UEFI (de supervisor) bloquea el arranque, el restablecimiento y la reinstalación. Elimínala en la configuración de la BIOS si la conoces, o solicita el desbloqueo al fabricante (Dell/HP/Lenovo) con la prueba de propiedad.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Absolute / Computrace (módulo de persistencia)</h3>
+    <p>Algunos portátiles empresariales incluyen <strong>Absolute</strong> (antes Computrace/LoJack) integrado en el firmware; reinstala su agente tras un borrado. Debe liberarse/desactivarse desde la consola de Absolute por la organización propietaria.</p>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- ENGLISH                                                               -->
+<!-- ===================================================================== -->
+<div data-langblock="en">
+  <div class="page-head">
+    <h1>Device Reset Guide</h1>
+    <p>How to unlink and unlock a device (personal accounts and management/MDM locks) before wiping or reselling it.</p>
+  </div>
+
+  <div class="callout">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>
+    <div class="c-body"><strong>Remove every account and management lock BEFORE you factory reset.</strong> Wiping the device first usually leaves it locked (Apple Activation Lock, Android FRP, or automatic MDM re-enrollment).</div>
+  </div>
+
+  <div class="toc">
+    <a href="#en-mobile">Mobile</a>
+    <a href="#en-laptops">Laptops</a>
+  </div>
+
+  <h2 class="section-title" id="en-mobile">Mobile</h2>
+
+  <div class="card">
+    <h3 id="en-apple">Apple — iCloud &amp; Activation Lock <span class="tag personal">Personal</span></h3>
+    <h4>If you still have the iPhone or iPad</h4>
+    <ol>
+      <li>If you paired an Apple Watch, unpair it first.</li>
+      <li>Sign out of iCloud: <strong>Settings</strong> &gt; <strong>[your name]</strong> &gt; scroll down &gt; <strong>Sign Out</strong>. Enter your Apple Account (Apple ID) password and tap <strong>Turn Off</strong>.</li>
+      <li>Go to <strong>Settings</strong> &gt; <strong>General</strong> &gt; <strong>Transfer or Reset [device]</strong> &gt; <strong>Erase All Content and Settings</strong>. If <strong>Find My</strong> is on, you may need the Apple ID password. For eSIM, choose to erase both the device and the eSIM profile (or keep the eSIM if transferring the line).</li>
+      <li>If asked for the device passcode or Screen Time passcode, enter it, then tap <strong>Erase</strong>.</li>
+      <li>Contact your carrier to transfer service to the new owner.</li>
+      <li>Remove the device from your trusted device list (your Apple Account page).</li>
+    </ol>
+    <h4>If you no longer have the device</h4>
+    <ol>
+      <li>Sign in to <code>iCloud.com/find</code> or the <strong>Find My</strong> app on another device, select the device, tap <strong>Erase</strong>, then <strong>Remove from Account</strong>.</li>
+      <li>If you can't, change your Apple Account password so the new owner can't use iCloud.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Apple — Activation Lock on supervised / MDM devices <span class="tag enterprise">Enterprise</span></h3>
+    <p>Company iPhones/iPads enrolled through <strong>Apple Business Manager (ABM)</strong> or <strong>Apple School Manager</strong> keep Activation Lock even after the user signs out. To clear it:</p>
+    <ol>
+      <li>Sign in to ABM/ASM as an <strong>Administrator</strong> or <strong>Device Enrollment Manager</strong>.</li>
+      <li>Find the device by serial number.</li>
+      <li>Choose <strong>Turn off Activation Lock</strong> (or <strong>Release Device</strong> to also remove it from MDM/ADE so it won't re-enroll after the wipe).</li>
+      <li>MDM alternative: send an <strong>Activation Lock bypass code</strong> (the device must be supervised). On the lock screen, leave the username blank and enter the bypass code in the password field.</li>
+      <li>If the device isn't in your ABM/MDM, contact Apple Business / AppleCare Enterprise support with proof of purchase.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 id="en-samsung">Samsung — Samsung account <span class="tag personal">Personal</span></h3>
+    <ol>
+      <li>Sign in to <code>account.samsung.com</code>.</li>
+      <li>Open the <strong>Devices</strong> panel.</li>
+      <li>Select the device you want to remove.</li>
+      <li>Click <strong>Disconnect</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Samsung — Knox Mobile Enrollment / Knox Guard <span class="tag enterprise">Enterprise</span></h3>
+    <p>Corporate Samsung devices enrolled via Knox re-enroll or stay locked even after you remove the personal account.</p>
+    <ol>
+      <li>Sign in to the Knox portal (<strong>Knox Mobile Enrollment</strong> / <strong>Knox Manage</strong>).</li>
+      <li>Find the device by IMEI or serial number.</li>
+      <li>Delete it from KME (and release/unlock it in Knox Guard if used).</li>
+    </ol>
+    <p class="note">Knox no longer bypasses FRP (Factory Reset Protection) on Android 15 and later, so you must also remove the Google account.</p>
+  </div>
+
+  <div class="card">
+    <h3 id="en-google">Google / Android — Google account &amp; FRP <span class="tag personal">Personal</span></h3>
+    <p><strong>Always</strong> remove the Google account <strong>before</strong> the factory reset; otherwise FRP locks the phone and asks for the previous Google login after reset.</p>
+    <h4>On the device</h4>
+    <ol>
+      <li><strong>Settings</strong> &gt; <strong>Accounts</strong> (or <strong>Passwords &amp; accounts</strong>) &gt; <strong>Google</strong> &gt; <strong>Remove account</strong>.</li>
+    </ol>
+    <h4>Remotely / from another device</h4>
+    <ol>
+      <li>Open <code>myaccount.google.com/device-activity</code>.</li>
+      <li>Select the device.</li>
+      <li>Three dots &gt; <strong>Sign out</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Android — zero-touch enrollment <span class="tag enterprise">Enterprise</span></h3>
+    <p>Devices in <strong>Android zero-touch</strong> re-provision into the MDM after every reset. Remove the device from the zero-touch console (or have the reseller remove it) before resale.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Other Android brands — Mi Account, Huawei ID, etc.</h3>
+    <p>Xiaomi/Redmi/POCO (<strong>Mi Account</strong>), <strong>Huawei ID</strong>, OPPO/Realme/vivo each add their own account lock. Remove that account in Settings before resetting; there is no official bypass for most.</p>
+  </div>
+
+  <div class="card">
+    <h3>Microsoft Intune / Autopilot (mobile) <span class="tag enterprise">Enterprise</span></h3>
+    <ol>
+      <li>Sign in to the <strong>Microsoft Intune admin center</strong>.</li>
+      <li><strong>Devices</strong> &gt; <strong>All devices</strong>.</li>
+      <li>Select the device to retire.</li>
+      <li>Click <strong>Retire</strong> &gt; <strong>Yes</strong>. (Propagates within ~15 min if powered on and connected.)</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Carrier / SIM network lock</h3>
+    <p>A phone locked to a carrier needs the carrier's network unlock before it works on another network — separate from any account lock.</p>
+  </div>
+
+  <h2 class="section-title" id="en-laptops">Laptops</h2>
+
+  <div class="card">
+    <h3>Chromebook — Enterprise Enrollment (deprovision) <span class="tag enterprise">Enterprise</span></h3>
+    <ol>
+      <li>Sign in to the <strong>Google Admin console</strong>.</li>
+      <li><strong>Devices</strong> &gt; <strong>Chrome</strong> &gt; <strong>Devices</strong>.</li>
+      <li>Filter by status and select the correct organizational unit.</li>
+      <li>Tick the box next to the device(s).</li>
+      <li>Click <strong>Deprovision</strong> selected devices.</li>
+      <li>Choose to factory reset (removes user profiles, policies and enrollment).</li>
+      <li>Confirm and pick a reason if required (not needed for annual licenses / Chrome Enterprise Upgrade).</li>
+      <li>Click <strong>Deprovision</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 id="en-chromebook">Chromebook — personal Google account <span class="tag personal">Personal</span></h3>
+    <p class="note">Corrected: this section was previously mislabeled as "iCloud".</p>
+    <ol>
+      <li>On any device (not the Chromebook), open <code>myaccount.google.com</code>.</li>
+      <li><strong>Security</strong> &gt; <strong>Manage devices</strong>.</li>
+      <li>Find the Chromebook.</li>
+      <li>Three dots &gt; <strong>Sign out</strong>.</li>
+      <li>On the Chromebook, sign out the owner profile.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3 id="en-windows">Microsoft — Intune retire + Autopilot deregistration <span class="tag enterprise">Enterprise</span></h3>
+    <p><strong>Retire</strong> wipes the PC but does <strong>not</strong> remove the Autopilot registration; on reset it re-enrolls into the organization. Do both:</p>
+    <ol>
+      <li>Intune admin center &gt; <strong>Devices</strong> &gt; <strong>All devices</strong> &gt; select the device &gt; <strong>Retire</strong>.</li>
+      <li>Then <strong>Devices</strong> &gt; <strong>Windows</strong> &gt; <strong>Enrollment</strong> &gt; <strong>Windows Autopilot devices</strong> &gt; find by serial number &gt; <strong>Delete</strong> (deregister).</li>
+    </ol>
+    <p class="note">For Entra-joined devices no extra Entra step is needed after deregistering; avoid manually deleting them from Entra ID.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Windows — Entra ID / Azure AD join &amp; BitLocker</h3>
+    <ul>
+      <li>Azure AD/Entra-joined Windows re-associates with the organization; remove it via Intune/Entra as above.</li>
+      <li>If the drive is <strong>BitLocker</strong>-encrypted you need the recovery key to wipe or reinstall. Retrieve it from the owner's Entra account or Microsoft account before wiping.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 id="en-mac">Apple Mac — iCloud &amp; Activation Lock <span class="tag personal">Personal</span></h3>
+    <h4>If you still have the Mac</h4>
+    <ul>
+      <li><strong>macOS Ventura or later:</strong> <strong>Apple</strong> menu &gt; <strong>System Settings</strong> &gt; <strong>[your name]</strong> &gt; scroll to the bottom &gt; <strong>Sign Out</strong>.</li>
+      <li><strong>macOS Monterey or earlier:</strong> <strong>Apple</strong> menu &gt; <strong>System Preferences</strong> &gt; <strong>Apple ID</strong> &gt; <strong>Overview</strong> &gt; <strong>Sign Out</strong>.</li>
+    </ul>
+    <p>The steps are unchanged on Sonoma, Sequoia and macOS 26. Then erase: <strong>System Settings</strong> &gt; <strong>General</strong> &gt; <strong>Transfer or Reset</strong> &gt; <strong>Erase All Content and Settings</strong>.</p>
+    <h4>If you no longer have the Mac</h4>
+    <ol>
+      <li>On <code>iCloud.com/find</code> or <strong>Find My</strong> from another device, select the Mac &gt; <strong>Erase</strong> &gt; <strong>Remove from Account</strong>.</li>
+      <li>If you can't, change your Apple Account password.</li>
+    </ol>
+    <p class="note">Apple silicon Macs also have a firmware-level Activation Lock tied to Find My; signing out / turning off Find My clears it.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Windows — BIOS / UEFI firmware password</h3>
+    <p>A set BIOS/UEFI (supervisor) password blocks boot, reset and reinstall. Clear it in BIOS setup if you know it, or request an unlock from the OEM (Dell/HP/Lenovo) with proof of ownership.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Absolute / Computrace (persistence module)</h3>
+    <p>Some business laptops ship with <strong>Absolute</strong> (formerly Computrace/LoJack) baked into firmware; it reinstalls its agent after a wipe. It must be released/disabled from the Absolute console by the owning organization.</p>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- ITALIANO                                                              -->
+<!-- ===================================================================== -->
+<div data-langblock="it">
+  <div class="page-head">
+    <h1>Guida alla restituzione</h1>
+    <p>Come scollegare e sbloccare un dispositivo (account personali e blocchi di gestione/MDM) prima di cancellarlo o rivenderlo.</p>
+  </div>
+
+  <div class="callout">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>
+    <div class="c-body"><strong>Rimuovi tutti gli account e i blocchi di gestione PRIMA del ripristino di fabbrica.</strong> Cancellare il dispositivo prima lo lascia di solito bloccato (Blocco di attivazione Apple, FRP Android o re-iscrizione automatica all'MDM).</div>
+  </div>
+
+  <div class="toc">
+    <a href="#it-mobile">Dispositivi mobili</a>
+    <a href="#it-portatili">Portatili</a>
+  </div>
+
+  <h2 class="section-title" id="it-mobile">Dispositivi mobili</h2>
+
+  <div class="card">
+    <h3 id="it-apple">Apple — iCloud e Blocco di attivazione <span class="tag personal">Personale</span></h3>
+    <h4>Se hai ancora l'iPhone o l'iPad</h4>
+    <ol>
+      <li>Se hai abbinato un Apple Watch, annulla prima l'abbinamento.</li>
+      <li>Esci da iCloud: <strong>Impostazioni</strong> &gt; <strong>[il tuo nome]</strong> &gt; scorri in basso &gt; <strong>Esci</strong>. Inserisci la password del tuo Account Apple (Apple ID) e tocca <strong>Disattiva</strong>.</li>
+      <li>Vai su <strong>Impostazioni</strong> &gt; <strong>Generali</strong> &gt; <strong>Trasferisci o inizializza [dispositivo]</strong> &gt; <strong>Inizializza contenuto e impostazioni</strong>. Se <strong>Dov'è</strong> è attivo, potrebbe servire la password dell'Apple ID. Per l'eSIM, scegli di cancellare sia il dispositivo sia il profilo eSIM (o conserva l'eSIM se trasferisci la linea).</li>
+      <li>Se richiesto, inserisci il codice del dispositivo o di Tempo di utilizzo, poi tocca <strong>Inizializza</strong>.</li>
+      <li>Contatta il tuo operatore per trasferire il servizio al nuovo proprietario.</li>
+      <li>Rimuovi il dispositivo dall'elenco dei dispositivi attendibili (pagina del tuo Account Apple).</li>
+    </ol>
+    <h4>Se non hai più il dispositivo</h4>
+    <ol>
+      <li>Accedi a <code>iCloud.com/find</code> o all'app <strong>Dov'è</strong> da un altro dispositivo, seleziona il dispositivo, tocca <strong>Inizializza</strong>, poi <strong>Rimuovi dall'account</strong>.</li>
+      <li>Se non puoi, cambia la password del tuo Account Apple così il nuovo proprietario non potrà usare iCloud.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Apple — Blocco di attivazione su dispositivi supervisionati / MDM <span class="tag enterprise">Aziendale</span></h3>
+    <p>Gli iPhone/iPad aziendali registrati tramite <strong>Apple Business Manager (ABM)</strong> o <strong>Apple School Manager</strong> mantengono il Blocco di attivazione anche dopo che l'utente è uscito. Per rimuoverlo:</p>
+    <ol>
+      <li>Accedi ad ABM/ASM come <strong>Amministratore</strong> o <strong>Responsabile registrazione dispositivi</strong>.</li>
+      <li>Individua il dispositivo dal numero di serie.</li>
+      <li>Scegli <strong>Disattiva Blocco di attivazione</strong> (oppure <strong>Rilascia dispositivo</strong> per rimuoverlo anche dall'MDM/ADE, così non si re-iscrive dopo la cancellazione).</li>
+      <li>In alternativa via MDM: invia un <strong>codice di bypass del Blocco di attivazione</strong> (il dispositivo dev'essere supervisionato). Nella schermata di blocco lascia vuoto il nome utente e inserisci il codice nel campo password.</li>
+      <li>Se il dispositivo non è nel tuo ABM/MDM, contatta il supporto Apple Business / AppleCare Enterprise con la prova d'acquisto.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 id="it-samsung">Samsung — account Samsung <span class="tag personal">Personale</span></h3>
+    <ol>
+      <li>Accedi a <code>account.samsung.com</code>.</li>
+      <li>Apri il pannello <strong>Dispositivi</strong>.</li>
+      <li>Seleziona il dispositivo da rimuovere.</li>
+      <li>Fai clic su <strong>Disconnetti</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Samsung — Knox Mobile Enrollment / Knox Guard <span class="tag enterprise">Aziendale</span></h3>
+    <p>I Samsung aziendali registrati tramite Knox si re-iscrivono o restano bloccati anche dopo aver rimosso l'account personale.</p>
+    <ol>
+      <li>Accedi al portale Knox (<strong>Knox Mobile Enrollment</strong> / <strong>Knox Manage</strong>).</li>
+      <li>Cerca il dispositivo per IMEI o numero di serie.</li>
+      <li>Eliminalo da KME (e rilascialo/sbloccalo in Knox Guard se utilizzato).</li>
+    </ol>
+    <p class="note">Knox non aggira più l'FRP (Factory Reset Protection) su Android 15 e successivi, quindi devi rimuovere anche l'account Google.</p>
+  </div>
+
+  <div class="card">
+    <h3 id="it-google">Google / Android — account Google e FRP <span class="tag personal">Personale</span></h3>
+    <p>Rimuovi <strong>sempre</strong> l'account Google <strong>prima</strong> del ripristino di fabbrica; altrimenti l'FRP blocca il telefono e richiede l'account Google precedente dopo il ripristino.</p>
+    <h4>Sul dispositivo</h4>
+    <ol>
+      <li><strong>Impostazioni</strong> &gt; <strong>Account</strong> (o <strong>Password e account</strong>) &gt; <strong>Google</strong> &gt; <strong>Rimuovi account</strong>.</li>
+    </ol>
+    <h4>Da remoto / da un altro dispositivo</h4>
+    <ol>
+      <li>Apri <code>myaccount.google.com/device-activity</code>.</li>
+      <li>Seleziona il dispositivo.</li>
+      <li>Tre puntini &gt; <strong>Esci</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Android — zero-touch enrollment <span class="tag enterprise">Aziendale</span></h3>
+    <p>I dispositivi in <strong>Android zero-touch</strong> vengono riprovisionati nell'MDM dopo ogni ripristino. Rimuovi il dispositivo dalla console zero-touch (o falla rimuovere dal rivenditore) prima della rivendita.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Altre marche Android — Mi Account, Huawei ID, ecc.</h3>
+    <p>Xiaomi/Redmi/POCO (<strong>Mi Account</strong>), <strong>Huawei ID</strong>, OPPO/Realme/vivo aggiungono un proprio blocco account. Rimuovi quell'account nelle Impostazioni prima del ripristino; per la maggior parte non esiste un metodo ufficiale di bypass.</p>
+  </div>
+
+  <div class="card">
+    <h3>Microsoft Intune / Autopilot (mobile) <span class="tag enterprise">Aziendale</span></h3>
+    <ol>
+      <li>Accedi all'<strong>interfaccia di amministrazione di Microsoft Intune</strong>.</li>
+      <li><strong>Dispositivi</strong> &gt; <strong>Tutti i dispositivi</strong>.</li>
+      <li>Seleziona il dispositivo da ritirare.</li>
+      <li>Fai clic su <strong>Ritira</strong> &gt; <strong>Sì</strong>. (Si propaga entro ~15 min se acceso e connesso.)</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Blocco di rete / SIM dell'operatore</h3>
+    <p>Un telefono bloccato a un operatore necessita dello sblocco di rete dell'operatore stesso per funzionare su un'altra rete: è indipendente da qualsiasi blocco account.</p>
+  </div>
+
+  <h2 class="section-title" id="it-portatili">Portatili</h2>
+
+  <div class="card">
+    <h3>Chromebook — Enterprise Enrollment (annullare la registrazione) <span class="tag enterprise">Aziendale</span></h3>
+    <ol>
+      <li>Accedi alla <strong>Console di amministrazione Google</strong>.</li>
+      <li><strong>Dispositivi</strong> &gt; <strong>Chrome</strong> &gt; <strong>Dispositivi</strong>.</li>
+      <li>Filtra per stato e seleziona l'unità organizzativa corretta.</li>
+      <li>Spunta la casella accanto al dispositivo (o ai dispositivi).</li>
+      <li>Fai clic su <strong>Annulla registrazione</strong> dei dispositivi selezionati.</li>
+      <li>Scegli il ripristino di fabbrica (rimuove profili utente, criteri e registrazione).</li>
+      <li>Conferma e seleziona un motivo se richiesto (non necessario con licenze annuali / Chrome Enterprise Upgrade).</li>
+      <li>Fai clic su <strong>Annulla registrazione</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 id="it-chromebook">Chromebook — account Google personale <span class="tag personal">Personale</span></h3>
+    <p class="note">Corretto: in precedenza questa sezione era erroneamente indicata come «iCloud».</p>
+    <ol>
+      <li>Da un qualsiasi dispositivo (non il Chromebook), apri <code>myaccount.google.com</code>.</li>
+      <li><strong>Sicurezza</strong> &gt; <strong>Gestisci dispositivi</strong>.</li>
+      <li>Individua il Chromebook.</li>
+      <li>Tre puntini &gt; <strong>Esci</strong>.</li>
+      <li>Sul Chromebook, esci dal profilo del proprietario.</li>
+    </ol>
+  </div>
+
+  <div class="card enterprise">
+    <h3 id="it-windows">Microsoft — ritiro in Intune + cancellazione da Autopilot <span class="tag enterprise">Aziendale</span></h3>
+    <p><strong>Ritira</strong> cancella il PC ma <strong>non</strong> rimuove la registrazione Autopilot; al ripristino si re-iscrive nell'organizzazione. Esegui entrambi i passaggi:</p>
+    <ol>
+      <li>Interfaccia di Intune &gt; <strong>Dispositivi</strong> &gt; <strong>Tutti i dispositivi</strong> &gt; seleziona il PC &gt; <strong>Ritira</strong>.</li>
+      <li>Poi <strong>Dispositivi</strong> &gt; <strong>Windows</strong> &gt; <strong>Registrazione</strong> &gt; <strong>Dispositivi Windows Autopilot</strong> &gt; cerca per numero di serie &gt; <strong>Elimina</strong> (annulla registrazione).</li>
+    </ol>
+    <p class="note">Per i dispositivi aggregati a Entra non serve un passaggio extra in Entra dopo l'annullamento; evita di eliminarli manualmente da Entra ID.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Windows — aggregazione a Entra ID / Azure AD e BitLocker</h3>
+    <ul>
+      <li>Windows aggregato ad Azure AD/Entra si riassocia all'organizzazione; rimuovilo tramite Intune/Entra come sopra.</li>
+      <li>Se il disco è cifrato con <strong>BitLocker</strong> ti serve la chiave di ripristino per cancellare o reinstallare. Recuperala dall'account Entra del proprietario o dal suo account Microsoft prima di cancellare.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 id="it-mac">Apple Mac — iCloud e Blocco di attivazione <span class="tag personal">Personale</span></h3>
+    <h4>Se hai ancora il Mac</h4>
+    <ul>
+      <li><strong>macOS Ventura o successivo:</strong> menu <strong>Apple</strong> &gt; <strong>Impostazioni di Sistema</strong> &gt; <strong>[il tuo nome]</strong> &gt; scorri in fondo &gt; <strong>Esci</strong>.</li>
+      <li><strong>macOS Monterey o precedente:</strong> menu <strong>Apple</strong> &gt; <strong>Preferenze di Sistema</strong> &gt; <strong>Apple ID</strong> &gt; <strong>Panoramica</strong> &gt; <strong>Esci</strong>.</li>
+    </ul>
+    <p>I passaggi sono invariati su Sonoma, Sequoia e macOS 26. Poi cancella: <strong>Impostazioni di Sistema</strong> &gt; <strong>Generali</strong> &gt; <strong>Trasferisci o inizializza</strong> &gt; <strong>Inizializza contenuto e impostazioni</strong>.</p>
+    <h4>Se non hai più il Mac</h4>
+    <ol>
+      <li>Su <code>iCloud.com/find</code> o <strong>Dov'è</strong> da un altro dispositivo, seleziona il Mac &gt; <strong>Inizializza</strong> &gt; <strong>Rimuovi dall'account</strong>.</li>
+      <li>Se non puoi, cambia la password del tuo Account Apple.</li>
+    </ol>
+    <p class="note">I Mac con chip Apple hanno anche un Blocco di attivazione a livello di firmware legato a Dov'è; uscire / disattivare Dov'è lo rimuove.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Windows — password BIOS / UEFI</h3>
+    <p>Una password BIOS/UEFI (supervisore) impostata blocca avvio, ripristino e reinstallazione. Rimuovila nella configurazione del BIOS se la conosci, oppure richiedi lo sblocco al produttore (Dell/HP/Lenovo) con la prova di proprietà.</p>
+  </div>
+
+  <div class="card enterprise">
+    <h3>Absolute / Computrace (modulo di persistenza)</h3>
+    <p>Alcuni portatili aziendali includono <strong>Absolute</strong> (ex Computrace/LoJack) integrato nel firmware; reinstalla il proprio agente dopo una cancellazione. Va rilasciato/disattivato dalla console Absolute dall'organizzazione proprietaria.</p>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span data-i18n="footer">Guía interna de restitución de dispositivos · PCaudit · Archivo único autónomo (sin dependencias externas).</span>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  if(window.self!==window.top){document.body.classList.add('embedded');}
+
+  // ---- Language ----
+  var langLabels={
+    es:{subtitle:'Guía de restitución', footer:'Guía interna de restitución de dispositivos · PCaudit · Archivo único autónomo (sin dependencias externas).'},
+    en:{subtitle:'Device Reset Guide', footer:'Internal device reset guide · PCaudit · Single self-contained file (no external dependencies).'},
+    it:{subtitle:'Guida alla restituzione', footer:'Guida interna alla restituzione dei dispositivi · PCaudit · File unico autonomo (senza dipendenze esterne).'}
+  };
+  function setLang(l){
+    document.querySelectorAll('[data-langblock]').forEach(function(b){b.classList.toggle('active',b.dataset.langblock===l);});
+    document.querySelectorAll('[data-langbtn]').forEach(function(x){x.classList.toggle('btn-primary',x.dataset.langbtn===l);});
+    document.querySelectorAll('[data-i18n]').forEach(function(n){var k=n.getAttribute('data-i18n');if(langLabels[l]&&langLabels[l][k])n.textContent=langLabels[l][k];});
+    root.lang=l;
+    try{localStorage.setItem('pcaudit-lang',l);}catch(e){}
+  }
+  document.querySelectorAll('[data-langbtn]').forEach(function(x){
+    x.addEventListener('click',function(){setLang(x.dataset.langbtn);});
+  });
+
+  // ---- Theme ----
+  var toggle=document.getElementById('theme-toggle');
+  function setTheme(t){
+    root.dataset.theme=t;
+    toggle.textContent=t==='dark'?'☀️':'🌙';
+    try{localStorage.setItem('pcaudit-theme',t);}catch(e){}
+  }
+  toggle.addEventListener('click',function(){setTheme(root.dataset.theme==='dark'?'light':'dark');});
+
+  // ---- Restore preferences ----
+  var savedLang='it',savedTheme='light';
+  try{savedLang=localStorage.getItem('pcaudit-lang')||'it';savedTheme=localStorage.getItem('pcaudit-theme')||'light';}catch(e){}
+  var hash=(location.hash||'').replace('#','');
+  var hm=hash.match(/^(es|en|it)-/);
+  setLang(hm?hm[1]:savedLang);
+  setTheme(savedTheme);
+  if(hash){var el=document.getElementById(hash);if(el){var jump=function(){el.scrollIntoView();};setTimeout(jump,80);setTimeout(jump,300);window.addEventListener('load',function(){setTimeout(jump,60);});}}
+})();
+</script>
+</body>
+</html>
